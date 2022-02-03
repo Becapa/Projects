@@ -62,5 +62,5 @@ if __name__ == '__main__':
             print("All possible values for", feature['name'], ": ", feature['possible_values'])
     target_feature = input("What is the target feature? ")
     split_feature = input("What is the feature to split on? ")
-    print("The information gain for ph with a runoff split is:", reader.arff_data.information_gain(target_feature, split_feature))
+    print("The information gain is:", reader.arff_data.information_gain(target_feature, split_feature))
             
