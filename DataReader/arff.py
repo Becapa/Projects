@@ -44,7 +44,6 @@ class DataSet:
 
     def get_counts_filtered_by(self, target_feature, feature_to_split_on, split_value):
         counts = []
-        counts = []
         items = []
         feature_values = []
         for instance in self.instances:
