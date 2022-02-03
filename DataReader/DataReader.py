@@ -1,31 +1,9 @@
-class ArffData:
-    def __init__(self):
-        self.features = []
-        self.instances = []
-
-    def add_feature(self, feature):
-        self.features.append(feature)
-
-    def add_instance(self, instance):
-        self.instances.append(instance)
-
-    def get_feature_min(self, feature_name):
-        current_min = float(self.instances[0][feature_name])
-        for instance in self.instances:
-            if(float(instance[feature_name]) < current_min):
-                current_min = float(instance[feature_name])
-        return current_min
-
-    def get_feature_max(self, feature_name):
-        current_max = float(self.instances[0][feature_name])
-        for instance in self.instances:
-            if(float(instance[feature_name]) > current_max):
-                current_max = float(instance[feature_name])
-        return current_max
+from asyncore import read
+from arff import DataSet
 
 class DataReader:
     def __init__(self) -> None:
-        self.arff_data = ArffData()
+        self.arff_data = DataSet()
 
     def parse_file(self, file):
         data = False
@@ -44,16 +22,20 @@ class DataReader:
         words = line.split()
         feature = {}
         feature['name'] = words[1]
-        if('{' not in words[2] or ('{' in words[2] and '}' in words[2])):
+        if('{' not in words[2]): 
             feature['value_type'] = words[2]
+        elif('{' in words[2] and '}' in words[2]):
+            feature['value_type'] = 'discrete'
+            feature['possible_values'] = words[2].strip('{}').split(',')
         else:
-            types = ''
+            types = []
             words_length = len(words)
             for index in range(2, words_length):
-                types += words[index]
+                types.append(words[index])
                 if(words[index] == '}'):
                     break
-            feature['value_type'] = types
+            feature['value_type'] = 'discrete'
+            feature['possible_values'] = types
         return feature
 
     def get_data_instance(self, line):
@@ -76,8 +58,9 @@ if __name__ == '__main__':
         if(feature['value_type'] == 'numeric'):
             print(feature['name'], "min:", reader.arff_data.get_feature_min(feature['name']))
             print(feature['name'], "max:", reader.arff_data.get_feature_max(feature['name']))
-    for feature in reader.arff_data.features:
-        if(feature['value_type'] != 'numeric'):
-            possible_values = feature['value_type'].strip('{}').split(',')
-            print("All possible values for", feature['name'], ": ", possible_values)
+        elif(feature['value_type'] == 'discrete'):
+            print("All possible values for", feature['name'], ": ", feature['possible_values'])
+    target_feature = input("What is the target feature? ")
+    split_feature = input("What is the feature to split on? ")
+    print("The information gain for ph with a runoff split is:", reader.arff_data.information_gain(target_feature, split_feature))
             

@@ -1,21 +1,20 @@
 import math
 
-def entropy(probabilities):
+def entropy(counts):
+    denom = sum(counts)
     entropy = 0
-    for prob in probabilities:
-        prob = float(prob)
+    for num in counts:
+        prob = num/denom
         if prob > 0:
             entropy -= prob * math.log(prob, 2)
     return entropy
 
 if __name__ == '__main__':
-    probabilites = []
+    counts = []
     while(True):
-        prob = input('Enter a probability for an event: ')
-        if prob == '':
+        count = input('Enter a count for an event: ')
+        if count == '':
             break
-        num, denom = prob.split('/')
-        new_prob = float(num) / float(denom)
-        probabilites.append(new_prob)
-    ent = entropy(probabilites)
-    print(ent)
+        counts.append(int(count))
+    ent = entropy(counts)
+    print("The entropy for this set of counts is:", ent)
