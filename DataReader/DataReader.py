@@ -1,5 +1,5 @@
 from asyncore import read
-from arff import DataSet
+from id3 import DataSet
 
 class DataReader:
     def __init__(self) -> None:
@@ -62,5 +62,5 @@ if __name__ == '__main__':
             print("All possible values for", feature['name'], ": ", feature['possible_values'])
     target_feature = input("What is the target feature? ")
     split_feature = input("What is the feature to split on? ")
-    print("The information gain is:", reader.arff_data.information_gain(target_feature, split_feature))
+    print("The information gain is:", reader.arff_data.get_information_gain(target_feature, split_feature))
             

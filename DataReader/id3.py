@@ -56,9 +56,9 @@ class DataSet:
             counts.append(items.count(value))
         return counts
 
-    def information_gain(self, target_feature, feature_to_split_on):
+    def get_information_gain(self, target_feature, feature_to_split_on):
         total_instances = len(self.instances)
-        my_entropy = self.calculate_entropy(self.get_counts(target_feature))
+        my_entropy = self.get_entropy(self.get_counts(target_feature))
         sum_splits_weighted_entropy = 0
         split_values = []
         for feature in self.features:
@@ -67,10 +67,10 @@ class DataSet:
         for value in split_values:
             counts = self.get_counts_filtered_by(target_feature, feature_to_split_on, value)
             total = sum(counts)
-            sum_splits_weighted_entropy += self.calculate_entropy(counts) * total/total_instances
+            sum_splits_weighted_entropy += self.get_entropy(counts) * total/total_instances
         return my_entropy - sum_splits_weighted_entropy
         
-    def calculate_entropy(self, counts):
+    def get_entropy(self, counts):
         denom = sum(counts)
         entropy = 0
         for num in counts:
