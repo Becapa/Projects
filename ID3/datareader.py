@@ -7,12 +7,12 @@ class DataReader:
         for line in file:
             if not line.strip():
                 continue
-            if(line.split()[0] == '@attribute'):
+            if line.split()[0] == '@attribute':
                 dataset.add_feature(DataReader.get_feature(line))
-            if(line.split()[0] == '@data'):
+            if line.split()[0] == '@data':
                 at_data_section = True
                 continue
-            if(at_data_section == True):
+            if at_data_section == True:
                 dataset.add_instance(DataReader.get_data_instance(dataset, line))
         return dataset
 
@@ -20,9 +20,9 @@ class DataReader:
         words = line.split()
         feature = {}
         feature['name'] = words[1]
-        if('{' not in words[2]): 
+        if '{' not in words[2]: 
             feature['value_type'] = words[2]
-        elif('{' in words[2] and '}' in words[2]):
+        elif '{' in words[2] and '}' in words[2]:
             feature['value_type'] = 'discrete'
             feature['possible_values'] = words[2].strip('{}').split(',')
         else:
@@ -30,7 +30,7 @@ class DataReader:
             words_length = len(words)
             for index in range(2, words_length):
                 types.append(words[index])
-                if(words[index] == '}'):
+                if words[index] == '}':
                     break
             feature['value_type'] = 'discrete'
             feature['possible_values'] = types

@@ -1,8 +1,6 @@
-# DataReader
+# ID3
 
-DataReader is a python script that asks a user for the filename of an arff file. It then reads the file and stores the features and instances in an arff DataSet object. It also outputs the min and max for each numerical feature and outputs the set of possible values for each discrete feature.
-
-It then asks for your target feature as well as your feature to split on in order to provide you with the information gain of that split.
+This is my implementation of the ID3 decision tree algorithm. In the id3.py file you can specify a path to your training dataset and your testing dataset. Included in this implementation are 3 datasets: lakesDiscreteFold1.arff, lakesDiscreteFold2.arff, and Table4-3.arff. 
 
 
 ## Usage
@@ -12,11 +10,4 @@ Be sure that python 3 is installed on your machine. Using a command line interfa
 ```
  python3 DataReader.py
 ```
-The script will ask for the path and name of the file. The files live in the includes directory so your response should look something like:
-
-``` 
-includes/lakes.arff
-```
-After that the script will print out the results of the min/max for each numerical feature and the set of possible values for the discrete features.
-
-Then the script will ask for a target feature. You must provide the name of a discrete feature in the arff file. An example of one in the lakes.arff file would be runoff. It will then ask for a feature to split on. This input will also need to be a discrete feature from the arff file.
+The script will build a decision tree using the data from the training set and use that decision tree to predict the target values of the testing set. It will then print out the accuracy of its predictions.
