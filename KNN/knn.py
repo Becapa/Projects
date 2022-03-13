@@ -1,4 +1,6 @@
 import math
+import operator
+from statistics import mode
 from datareader import DataReader
 
 class KNN:
@@ -21,9 +23,27 @@ class KNN:
                 sum += distance
             euclidean_distance = math.sqrt(sum)
             distance_pairs[euclidean_distance] = training_instance[self.dataset.target_feature['name']]
-        distance_pairs = sorted(distance_pairs)
-        for i in distance_pairs.items():
-            print(i)
+        distance_pairs = sorted(distance_pairs.items(), key=lambda t: t[0])
+        k_nearest = distance_pairs[:k]
+        if self.dataset.target_feature['value_type'] == 'discrete':
+            return self.get_mode(k_nearest)
+        else:
+            return self.get_mean(k_nearest)
+
+    def get_mode(self, k_nearest):
+        values = []
+        for distance, value in k_nearest:
+            values.append(value)
+        return mode(values)
+    
+    def get_mean(self, k_nearest):
+        sum = 0
+        count = 0
+        for distance, value in k_nearest:
+            sum += value
+            count += 1
+        return sum / count
+        
 
 if __name__ == '__main__':
     try:
@@ -33,9 +53,11 @@ if __name__ == '__main__':
             testing_dataset = DataReader.parse_file_into_dataset(testing_file)
         training_dataset.set_target_feature(-1)
         testing_dataset.set_target_feature(-1)
-        k = 1
+        k = 5
         knn = KNN(training_dataset)
         num_correct = 0
+        if (k > len(training_dataset.instances)):
+            raise Exception("K cannot be bigger than the amount of instances in the training set.")
         for instance in testing_dataset.instances:
             predicted_value = knn.predict_target_value_for_instance(instance, k)
             if predicted_value == instance[testing_dataset.target_feature['name']]:
