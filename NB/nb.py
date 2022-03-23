@@ -40,7 +40,9 @@ class NB:
                     continue
                 feature_count = self.get_feature_count_given_target(feature_name, instance[feature_name], target_feature)
                 feature = self.dataset.get_feature_from_features(feature_name)
-                prob = prob * (feature_count + 1) / (target_feature_count + (1 * len(feature['possible_values'])))
+                #using Laplace smoothing with a k of 1
+                k = 1
+                prob = prob * (feature_count + k) / (target_feature_count + (k * len(feature['possible_values']))) 
             if prob > highest_prob:
                 highest_prob = prob
                 best_target_value = target_feature
