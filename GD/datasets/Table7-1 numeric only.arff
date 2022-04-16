@@ -2,8 +2,8 @@
 
 @attribute Size numeric
 @attribute Floor numeric
-@attribute 'Broadband Rate' numeric
-@attribute 'Rental Price' numeric
+@attribute BroadbandRate numeric
+@attribute RentalPrice numeric
 
 @data
 500,4,8,320
